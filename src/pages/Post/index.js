@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import moment from 'moment'
 import axiosInstance from '../../config/axios'
+import CreateCommentForm from "./CreateCommentForm";
 
 const Post = () => {
   const [post, setPost] = useState({});
@@ -31,6 +32,9 @@ const Post = () => {
           </div>
         }
       </div>
+
+      <CreateCommentForm postId={post.id} />
+
     </div>
   )
 }

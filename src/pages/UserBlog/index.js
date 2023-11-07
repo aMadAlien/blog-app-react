@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../config/axios'
+import moment from 'moment'
 import DeletePostModal from './DeletePostModal';
+import EditPostModal from './EditPostModal';
 
 const UserBlog = () => {
   const [posts, setPosts] = useState([]);
   const [deletePostId, setDeletePostId] = useState();
+  const [editPostId, setEditPostId] = useState();
 
   const getPosts = () => {
     axiosInstance.get('posts?user=true&page=1')
@@ -35,9 +38,15 @@ const UserBlog = () => {
                         type="button"
                         className="btn btn-sm btn-outline-secondary"
                       >Delete</button>
-                      <button type="button" className="btn btn-sm btn-outline-secondary">Edit</button>
+                      <button
+                        onClick={() => setEditPostId(post.id)}
+                        type="button"
+                        className="btn btn-sm btn-outline-secondary"
+                      >Edit</button>
                     </div>
-                    <small className="text-body-secondary">9 mins</small>
+                    <small className="text-body-secondary">
+                      {moment.utc(post.created_at, "YYYY-MM-DDTHH:mm:ss.SSSSZ").fromNow()}
+                    </small>
                   </div>
                 </div>
               </div>
@@ -52,6 +61,12 @@ const UserBlog = () => {
         setPosts={setPosts}
         postId={deletePostId}
         closeModal={() => setDeletePostId(0)} />
+
+      <EditPostModal
+        posts={posts}
+        setPosts={setPosts}
+        postId={editPostId}
+        closeModal={() => setEditPostId(0)} />
 
     </div>
   </div>

@@ -5,6 +5,7 @@ import UserBlog from "./pages/UserBlog";
 import Profile from "./pages/Profile";
 import Login from "./pages/Auth/Login";
 import Registration from "./pages/Auth/Registration";
+import Post from "./pages/Post";
 
 function App() {
   return (
@@ -15,6 +16,8 @@ function App() {
         <Route path="profile" element={<Profile />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Registration />} />
+
+        <Route path="posts/:id" element={<Post />} />
       </Route>
     </Routes>
   );

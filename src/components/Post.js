@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import moment from 'moment'
 
 const Post = ({ posts, isUser = false, setDeletePostId, setEditPostId }) => {
@@ -8,7 +9,9 @@ const Post = ({ posts, isUser = false, setDeletePostId, setEditPostId }) => {
           <div key={post.id} className="col">
             <div className="card shadow-sm">
               <div className="card-body">
-                <h2 className="card-text fs-5 fw-bold text-uppercase">{post.title}</h2>
+                <h2 className="card-text fs-5 fw-bold text-uppercase">
+                  <Link to={'/posts/'+post.id}>{post.title}</Link>
+                </h2>
                 <p className="card-text">{post.description.slice(0, 100)}</p>
                 <div className="d-flex justify-content-between align-items-center">
                   {isUser && 

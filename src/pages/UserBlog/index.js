@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react'
+import Button from 'react-bootstrap/Button';
 import axiosInstance from '../../config/axios'
 import moment from 'moment'
 import DeletePostModal from './DeletePostModal';
 import EditPostModal from './EditPostModal';
+import CreatePostModal from './CreatePostModal';
 
 const UserBlog = () => {
   const [posts, setPosts] = useState([]);
   const [deletePostId, setDeletePostId] = useState();
   const [editPostId, setEditPostId] = useState();
+  const [openCreatePostModal, setOpenCreatePostModal] = useState(false);
 
   const getPosts = () => {
     axiosInstance.get('posts?user=true&page=1')
@@ -22,7 +25,8 @@ const UserBlog = () => {
   return (
   <div className="album py-5 bg-body-tertiary">
     <div className="container">
-      <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+    <Button onClick={() => setOpenCreatePostModal(true)} variant="dark">Create</Button>
+      <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 mt-4 g-3">
 
         {
           posts?.map(post => (
@@ -67,6 +71,12 @@ const UserBlog = () => {
         setPosts={setPosts}
         postId={editPostId}
         closeModal={() => setEditPostId(0)} />
+
+      <CreatePostModal
+        isOpen={openCreatePostModal}
+        posts={posts}
+        setPosts={setPosts}
+        closeModal={() => setOpenCreatePostModal(false)} />
 
     </div>
   </div>

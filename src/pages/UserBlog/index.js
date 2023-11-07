@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../config/axios'
+import DeletePostModal from './DeletePostModal';
 
 const UserBlog = () => {
   const [posts, setPosts] = useState([]);
+  const [deletePostId, setDeletePostId] = useState();
 
   const getPosts = () => {
     axiosInstance.get('posts?user=true&page=1')
@@ -28,7 +30,11 @@ const UserBlog = () => {
                   <p className="card-text">{post.description}</p>
                   <div className="d-flex justify-content-between align-items-center">
                     <div className="btn-group">
-                      <button type="button" className="btn btn-sm btn-outline-secondary">View</button>
+                      <button
+                        onClick={() => setDeletePostId(post.id)}
+                        type="button"
+                        className="btn btn-sm btn-outline-secondary"
+                      >Delete</button>
                       <button type="button" className="btn btn-sm btn-outline-secondary">Edit</button>
                     </div>
                     <small className="text-body-secondary">9 mins</small>
@@ -40,6 +46,13 @@ const UserBlog = () => {
         }
 
       </div>
+
+      <DeletePostModal
+        posts={posts}
+        setPosts={setPosts}
+        postId={deletePostId}
+        closeModal={() => setDeletePostId(0)} />
+
     </div>
   </div>
   )

@@ -1,6 +1,8 @@
+import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../../config/axios";
 
 const Login = () => {
+  const navigate = useNavigate();
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -10,6 +12,7 @@ const Login = () => {
     })
     .then(res => localStorage.setItem('access_token', res.data.access_token) )
     .catch(e => console.error(e))
+    navigate('/')
   }
 
   return (

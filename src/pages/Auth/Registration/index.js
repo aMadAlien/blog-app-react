@@ -1,6 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../../config/axios";
 
 const Registration = () => {
+  const navigate = useNavigate();
+
   const handleSubmit = e => {
     e.preventDefault();
     axiosInstance.post('/auth/register', {
@@ -10,7 +13,10 @@ const Registration = () => {
       email: e.target.email.value,
       password: e.target.password.value
     })
-    .then()
+    .then(res => {
+      localStorage.setItem('access_token', res.data.access_token);
+      navigate('/user-blog');
+    })
     .catch(e => console.error(e))
   }
 

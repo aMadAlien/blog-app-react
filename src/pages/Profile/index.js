@@ -31,6 +31,7 @@ const Profile = () => {
     .catch(e => console.error(e))
   }
 
+  if (!user) return <div>Log in first!</div>;
   return (
     <div>
       <h1 className='my-3'>Profile</h1>

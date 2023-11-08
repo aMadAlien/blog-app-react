@@ -2,13 +2,14 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axiosInstance from '../../config/axios'
 
-const CreateCommentForm = ({ postId }) => {
+const CreateCommentForm = ({ postId, commentId }) => {
 
   const submitComment = e => {
     e.preventDefault();
 
     axiosInstance.post('comments', {
       postId: postId,
+      commentId,
       comment: e.target.comment.value
     })
     .then(res => console.log(res.data))
@@ -17,10 +18,11 @@ const CreateCommentForm = ({ postId }) => {
 
   return (
     <div>
-      <h2>Comments</h2>
       <Form onSubmit={e => submitComment(e)} className="d-flex align-items-center">
         <Form.Group className="mb-3 w-100 me-4">
-          <Form.Label>Leave a comment</Form.Label>
+          {
+            !commentId && <Form.Label>Leave a comment</Form.Label>
+          }
           <Form.Control
             id="comment"
             as="textarea"

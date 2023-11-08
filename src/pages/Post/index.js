@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Button from 'react-bootstrap/Button';
 import moment from 'moment'
 import axiosInstance from '../../config/axios'
 import CreateCommentForm from "./CreateCommentForm";
@@ -7,6 +8,8 @@ import CreateCommentForm from "./CreateCommentForm";
 const Post = () => {
   const [post, setPost] = useState({});
   const [comments, setComments] = useState([]);
+  const [openReplie, setOpenReplie] = useState(0);
+
   const { id } = useParams();
 
   const getPost = () => {
@@ -41,20 +44,32 @@ const Post = () => {
         }
       </div>
 
+      <h2>Comments</h2>
+
       <CreateCommentForm postId={post.id} />
 
       <div className="list-group my-3">
         {comments.map(comment => 
-          <div key={comment.id} className="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+          <div key={comment.id} className="list-group-item list-group-item-action gap-3 py-3" aria-current="true">
             <div className="d-flex gap-2 w-100 justify-content-between">
               <div>
                 <h6 className="mb-0">{comment.user.username}</h6>
                 <p className="mb-0 opacity-75">{comment.comment}</p>
               </div>
-              <small className="opacity-50 text-nowrap">
-                {moment.utc(comment.created_at, "YYYY-MM-DDTHH:mm:ss.SSSSZ").fromNow()}
-              </small>
+              <div>
+                <small className="opacity-50 text-nowrap me-2 d-block">
+                  {moment.utc(comment.created_at, "YYYY-MM-DDTHH:mm:ss.SSSSZ").fromNow()}
+                </small>
+                <Button onClick={() => setOpenReplie(comment.id)} variant="link">replie</Button>
+              </div>
             </div>
+                {
+                  comment.id === openReplie &&
+                  <div>
+                    <hr />
+                    <CreateCommentForm postId={post.id} commentId={comment.id} />
+                  </div>
+                }
           </div>
         )}
       </div>

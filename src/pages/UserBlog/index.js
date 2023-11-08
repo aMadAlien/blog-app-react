@@ -1,27 +1,35 @@
 import React, { useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import axiosInstance from '../../config/axios'
-import moment from 'moment'
 import DeletePostModal from './DeletePostModal';
 import EditPostModal from './EditPostModal';
 import CreatePostModal from './CreatePostModal';
 import Post from '../../components/Post';
+import PaginationBlog from '../../components/Pagination'
 
 const UserBlog = () => {
   const [posts, setPosts] = useState([]);
   const [deletePostId, setDeletePostId] = useState();
   const [editPostId, setEditPostId] = useState();
   const [openCreatePostModal, setOpenCreatePostModal] = useState(false);
+  const [paginationData, setPaginationData] = useState({});
+  const [nextPage, setNextPage] = useState(1);
 
   const getPosts = () => {
-    axiosInstance.get('posts?user=true&page=1')
-      .then(res => setPosts(res.data.data))
+    axiosInstance.get('posts?user=true&page='+nextPage)
+      .then(res => {
+        setPosts(res.data.data)
+        setPaginationData({
+          active: res.data.current_page,
+          total: res.data.last_page,
+        });
+      })
       .catch(e => console.error(e))
   }
 
   useEffect(() => {
     getPosts();
-  }, [])
+  }, [nextPage])
 
   return (
   <div className="album py-5 bg-body-tertiary">
@@ -33,6 +41,9 @@ const UserBlog = () => {
         isUser={true}
         setDeletePostId={setDeletePostId}
         setEditPostId={setEditPostId} />
+
+      <hr />
+      <PaginationBlog active={paginationData.active} total={paginationData.total} setNextPage={setNextPage} />
 
       <DeletePostModal
         posts={posts}

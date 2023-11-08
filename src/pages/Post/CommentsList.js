@@ -1,14 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import cn from 'classname';
 import moment from 'moment'
 import axiosInstance from '../../config/axios'
 import CreateCommentForm from "./CreateCommentForm";
+import { CommentsContext } from './CommentsContext';
 
 const CommentsList = ({ postId }) => {
   const [openReplie, setOpenReplie] = useState(0);
   const [focusedComment, setfocusedComment] = useState(0);
   const [comments, setComments] = useState([]);
+
+  const { newComment } = useContext(CommentsContext);
 
   const getComments = () => {
     axiosInstance.get('comments?postId='+postId)
@@ -19,6 +22,10 @@ const CommentsList = ({ postId }) => {
   useEffect(() => {
     getComments()
   }, [])
+
+  useEffect(() => {
+    newComment.lenght && setComments(prevcomments => [...prevcomments, newComment])
+  }, [newComment])
 
   return (
     <div className="list-group my-3">

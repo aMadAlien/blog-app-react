@@ -1,8 +1,12 @@
+import { useContext, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axiosInstance from '../../config/axios'
+import { CommentsContext } from './CommentsContext';
 
 const CreateCommentForm = ({ postId, commentId }) => {
+  const [commentContent, setCommentContent] = useState('');
+  const { setNewComment } = useContext(CommentsContext);
 
   const submitComment = e => {
     e.preventDefault();
@@ -10,9 +14,12 @@ const CreateCommentForm = ({ postId, commentId }) => {
     axiosInstance.post('comments', {
       postId: postId,
       commentId,
-      comment: e.target.comment.value
+      comment: commentContent
     })
-    .then(res => console.log(res.data))
+    .then(res => {
+      setNewComment(res.data.newComment);
+      setCommentContent('');
+    })
     .catch(e => console.error(e))
   }
 
@@ -26,6 +33,8 @@ const CreateCommentForm = ({ postId, commentId }) => {
           <Form.Control
             id="comment"
             as="textarea"
+            value={commentContent}
+            onChange={e => setCommentContent(e.target.value)}
             required
             maxLength={"255"} />
         </Form.Group>

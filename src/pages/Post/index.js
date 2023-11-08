@@ -2,6 +2,8 @@ import { useParams } from "react-router-dom";
 import CreateCommentForm from "./CreateCommentForm";
 import CommentsList from "./CommentsList";
 import PostContent from "./PostContent";
+import { createContext } from "react";
+import { CommentsProvider } from './CommentsContext';
 
 const Post = () => {
   const { id } = useParams();
@@ -12,9 +14,10 @@ const Post = () => {
 
       <h2>Comments</h2>
 
-      <CreateCommentForm postId={id} />
-
-      <CommentsList postId={id} />
+      <CommentsProvider>
+        <CreateCommentForm postId={id} />
+        <CommentsList postId={id} />
+      </CommentsProvider>
     </div>
   )
 }
